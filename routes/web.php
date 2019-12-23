@@ -17,6 +17,6 @@ Route::get('/', function () {
 Route::get('/admin', function () {
     return view('admin.dashboard.index');
 })->name('admin.dashboard');
-Route::get('/admin/tables', function () {
-    return view('admin.tables.index');
-});
+
+
+Route::resource('/admin/tables','ProductAjaxController', ['as'=>'product']);
