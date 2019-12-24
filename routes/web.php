@@ -11,12 +11,15 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/admin', function () {
-    return view('admin.dashboard.index');
-})->name('admin.dashboard');
+Auth::routes();
+Route::middleware(['admin'])->group(function(){
+    Route::get('/admin', 'Admin\AdminController@index')->name('admin.dashboard');
+    Route::resource('/admin/tables','Admin\ProductAjaxController', ['as'=>'product']);
+});
 
 
-Route::resource('/admin/tables','ProductAjaxController', ['as'=>'product']);
+Route::get('/home', 'HomeController@index')->name('home');
