@@ -30,10 +30,12 @@
 
 <body id="page-top">
 
+
     <!-- Page Wrapper -->
     <div id="wrapper">
 
-        @include('admin.layouts.sidebar')
+
+        @include('superadmin.layouts.sidebar')
 
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
@@ -41,10 +43,16 @@
             <!-- Main Content -->
             <div id="content">
 
-                @include('admin.layouts.header')
+                @include('superadmin.layouts.header')
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    @if(Session::has('message'))
+                    <div class="alert alert-info {{ Session::has('message') ? 'alert-important' : '' }}">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        {{ Session::get('message') }}
+                    </div>
+                    @endif
 
                     @yield('content')
 
@@ -54,7 +62,7 @@
             </div>
             <!-- End of Main Content -->
 
-            @include('admin.layouts.footer')
+            @include('superadmin.layouts.footer')
 
         </div>
         <!-- End of Content Wrapper -->

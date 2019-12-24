@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\User;
+
 use App\Role;
 use Illuminate\Http\Request;
 use DataTables;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class RoleController extends Controller
 {
 
     public function __construct()
@@ -16,16 +14,11 @@ class UserController extends Controller
         $this->middleware('auth');
     }
 
-    public function AuthRouteAPI(Request $request){
-        return $request->user();
-    }
-
     public function index(Request $request)
     {
-        $roles = Role::all();
 
         if ($request->ajax()) {
-            $data = User::with('role')->get();
+            $data = Role::latest()->get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -40,26 +33,26 @@ class UserController extends Controller
                     ->make(true);
         }
 
-        return view('superadmin.users.index',compact('users', 'roles'));
+        return view('superadmin.roles.index',compact('roles'));
     }
 
     public function store(Request $request)
     {
-            $data[] = $request;
-
-            $validate = Validator::make($data, [
-                'name' => ['required', 'string', 'max:255'],
-                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-                'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'role_id' => ['required'],
-            ]);
-
-        User::updateOrCreate(['id' => $request->id],
-                ['name' => $request->name,
-                'email' => $request->email,
-                'role_id' => $request->role_id,
-                'password' => Hash::make($request['password'])]);
+        Role::updateOrCreate(['id' => $request->product_id],
+                ['role_name' => $request->role_name]);
 
         return response()->json(['success'=>'Product saved successfully.']);
+    }
+
+    public function edit($id)
+    {
+        $role = Role::find($id);
+        return response()->json($role);
+    }
+
+    public function destroy($id)
+    {
+        Role::find($id)->delete();
+        return response()->json(['success'=>'Role deleted successfully.']);
     }
 }

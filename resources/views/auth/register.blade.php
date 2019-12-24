@@ -17,8 +17,7 @@
                         <form method="POST" class="user" action="{{ route('register') }}">
                             @csrf
                             <div class="form-group">
-                                <input id="name" type="text"
-                                    class="form-control @error('name') is-invalid @enderror"
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror"
                                     name="name" placeholder="Full Name" value="{{ old('name') }}" required
                                     autocomplete="name" autofocus>
 
@@ -30,8 +29,8 @@
                             </div>
                             <div class="form-group">
                                 <input id="email" type="email"
-                                    class="form-control  @error('email') is-invalid @enderror"
-                                    name="email" value="{{ old('email') }}" required autocomplete="email"
+                                    class="form-control  @error('email') is-invalid @enderror" name="email"
+                                    value="{{ old('email') }}" required autocomplete="email"
                                     placeholder="Email Address">
 
                                 @error('email')
@@ -41,18 +40,15 @@
                                 @enderror
                             </div>
                             <div class="form-group">
-                                <select id="role" class="form-control"  @error('role') is-invalid @enderror" name="role"
-                                value="{{ old('role') }}" required>
+                                <select id="role_id" class="form-control" @error('role_id') is-invalid @enderror" name="role_id"
+                                    value="{{ old('role_id') }}" required>
                                     <option value="" disabled selected>Select Role...</option>
-                                    <option value="1">Superadmin</option>
-                                    <option value="2">Admin</option>
-                                    <option value="3">Player</option>
-                                    <option value="4">Team</option>
-                                    <option value="5">Academic</option>
-                                    <option value="6">Scout</option>
+                                    @foreach ($data as $role)
+                                    <option value="{{$role->id}}">{{$role->role_name}}</option>
+                                    @endforeach
                                 </select>
 
-                                @error('role')
+                                @error('role_id')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -62,18 +58,19 @@
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
                                     <input id="password" type="password"
-                                    class="form-control @error('password') is-invalid @enderror" name="password"
-                                    required autocomplete="new-password" placeholder="Password">
+                                        class="form-control @error('password') is-invalid @enderror" name="password"
+                                        required autocomplete="new-password" placeholder="Password">
 
-                                @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                                @enderror
+                                    @error('password')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                    @enderror
                                 </div>
                                 <div class="col-sm-6">
                                     <input id="password-confirm" type="password" class="form-control"
-                                    name="password_confirmation" required autocomplete="new-password" placeholder="Confirm Password">
+                                        name="password_confirmation" required autocomplete="new-password"
+                                        placeholder="Confirm Password">
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary  btn-block">

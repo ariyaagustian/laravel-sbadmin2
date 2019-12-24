@@ -1,4 +1,4 @@
-@extends('admin.main')
+@extends('superadmin.main')
 
 @push('css')
 <!-- Custom styles for this page -->
@@ -19,14 +19,14 @@
     </div>
     <div class="card-body">
         <div class="table-responsive">
-            <a class="btn btn-success mb-3" href="javascript:void(0)" id="createNewProduct"> Create New Product</a>
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <a class="btn btn-success mb-3" href="javascript:void(0)" id="createNewProduct"> Create New Role</a>
+            <table class="table table-bordered" id="table_roles" width="100%" cellspacing="0">
                 <thead>
                     <tr>
                         <th>No</th>
-                        <th>Name</th>
-                        <th>Details</th>
-                        <th width="135px">Action</th>
+                        <th>Role ID / Code</th>
+                        <th>Role Name</th>
+                        <th width="110px">Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -47,18 +47,10 @@
                 <form id="productForm" name="productForm" class="form-horizontal">
                     <input type="hidden" name="product_id" id="product_id">
                     <div class="form-group">
-                        <label for="name" class="col-sm-2 control-label">Name</label>
+                        {{-- <label for="name" class="col-sm-4 control-label">Role Name</label> --}}
                         <div class="col-sm-12">
-                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name"
+                            <input type="text" class="form-control" id="role_name" name="role_name" placeholder="Role Name"
                                 value="" maxlength="50" required="">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Details</label>
-                        <div class="col-sm-12">
-                            <textarea id="detail" name="detail" required="" placeholder="Enter Details"
-                                class="form-control"></textarea>
                         </div>
                     </div>
 
@@ -91,14 +83,14 @@
             }
       });
 
-      var table = $('#dataTable').DataTable({
+      var table = $('#table_roles').DataTable({
           processing: true,
           serverSide: true,
-          ajax: "{{ route('product.tables.index') }}",
+          ajax: "{{ route('roles.index') }}",
           columns: [
               {data: 'DT_RowIndex', name: 'DT_RowIndex'},
-              {data: 'name', name: 'name'},
-              {data: 'detail', name: 'detail'},
+              {data: 'id', name: 'id'},
+              {data: 'role_name', name: 'role_name'},
               {data: 'action', name: 'action', orderable: false, searchable: false},
           ]
       });
@@ -113,15 +105,14 @@
 
       $('body').on('click', '.editProduct', function () {
         var product_id = $(this).data('id');
-        var uri = '{{ route("product.tables.edit", ":id") }}';
+        var uri = '{{ route("roles.edit", ":id") }}';
         var uri = uri.replace(':id', product_id);
         $.get(uri, function (data) {
             $('#modelHeading').html("Edit Product");
             $('#saveBtn').val("edit-user");
             $('#ajaxModel').modal('show');
             $('#product_id').val(data.id);
-            $('#name').val(data.name);
-            $('#detail').val(data.detail);
+            $('#role_name').val(data.role_name);
         })
      });
 
@@ -131,7 +122,7 @@
 
           $.ajax({
             data: $('#productForm').serialize(),
-            url: "{{ route('product.tables.store') }}",
+            url: "{{ route('roles.store') }}",
             type: "POST",
             dataType: 'json',
             success: function (data) {
@@ -152,7 +143,7 @@
           var result = confirm("Are You sure want to delete !");
           if(result){
             var product_id = $(this).data("id");
-            var uri = '{{ route("product.tables.destroy", ":id") }}';
+            var uri = '{{ route("roles.destroy", ":id") }}';
             var uri = uri.replace(':id', product_id);
 
             $.ajax({

@@ -7,8 +7,14 @@ use App\Http\Controllers\Controller;
 
 class SuperadminController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     function index()
     {
-        return view('admin.dashboard.index');
+        return view('superadmin.dashboard.index');
     }
 }

@@ -16,14 +16,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
-Route::middleware(['superadmin'])->group(function(){
-    Route::get('/superadmin', 'Superadmin\SuperadminController@index')->name('admin.dashboard');
-    Route::resource('/superadmin/tables','Admin\ProductAjaxController', ['as'=>'product']);
-});
-Route::middleware(['admin'])->group(function(){
-    Route::get('/admin', 'Admin\AdminController@index')->name('admin.dashboard');
-    Route::resource('/admin/tables','Admin\ProductAjaxController', ['as'=>'product']);
-});
+
+    Route::get('/dashboard', 'Superadmin\SuperadminController@index')->name('admin.dashboard')->middleware('role:1,2,3,4,5');
+    Route::resource('users','UserController')->middleware('role:1,2');
+    Route::resource('roles','RoleController')->middleware('role:1,2');
+
+
+
+
 
 
 // Route::get('/home', 'HomeController@index')->name('home');
