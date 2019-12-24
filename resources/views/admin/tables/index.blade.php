@@ -149,22 +149,24 @@
       });
 
       $('body').on('click', '.deleteProduct', function () {
+          var result = confirm("Are You sure want to delete !");
+          if(result){
+            var product_id = $(this).data("id");
+            var uri = '{{ route("product.tables.destroy", ":id") }}';
+            var uri = uri.replace(':id', product_id);
 
-          var product_id = $(this).data("id");
-          confirm("Are You sure want to delete !");
-          var uri = '{{ route("product.tables.destroy", ":id") }}';
-          var uri = uri.replace(':id', product_id);
+            $.ajax({
+                type: "DELETE",
+                url: uri,
+                success: function (data) {
+                    table.draw();
+                },
+                error: function (data) {
+                    console.log('Error:', data);
+                }
+            });
+          }
 
-          $.ajax({
-              type: "DELETE",
-              url: uri,
-              success: function (data) {
-                  table.draw();
-              },
-              error: function (data) {
-                  console.log('Error:', data);
-              }
-          });
       });
 
     });
