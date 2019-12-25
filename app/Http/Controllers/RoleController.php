@@ -33,7 +33,7 @@ class RoleController extends Controller
                     ->make(true);
         }
 
-        return view('superadmin.roles.index',compact('roles'));
+        return view('superadmin.roles.index');
     }
 
     public function store(Request $request)

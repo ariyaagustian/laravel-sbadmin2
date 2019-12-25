@@ -40,7 +40,7 @@ class UserController extends Controller
                     ->make(true);
         }
 
-        return view('superadmin.users.index',compact('users', 'roles'));
+        return view('superadmin.users.index',compact('roles'));
     }
 
     public function store(Request $request)
@@ -54,12 +54,24 @@ class UserController extends Controller
                 'role_id' => ['required'],
             ]);
 
-        User::updateOrCreate(['id' => $request->id],
+        User::updateOrCreate(['id' => $request->product_id],
                 ['name' => $request->name,
                 'email' => $request->email,
                 'role_id' => $request->role_id,
                 'password' => Hash::make($request['password'])]);
 
         return response()->json(['success'=>'Product saved successfully.']);
+    }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        return response()->json($user);
+    }
+
+    public function destroy($id)
+    {
+        User::find($id)->delete();
+        return response()->json(['success'=>'Role deleted successfully.']);
     }
 }
