@@ -190,6 +190,11 @@
             },
             error: function (data) {
                 console.log('Error:', data);
+                var errors = data.responseJSON;
+                var errorsHtml = '';
+                $.each(errors.errors, function( key, value ) {
+                errorsHtml += alert(value[0]);
+                });
                 $('#saveBtn').html('Save Changes');
             }
         });

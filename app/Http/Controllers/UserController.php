@@ -45,22 +45,31 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-            $data[] = $request;
-
-            $validate = Validator::make($data, [
+        if($request->get('password') != ''){
+            $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'role_id' => ['required'],
             ]);
-
-        User::updateOrCreate(['id' => $request->product_id],
+            User::updateOrCreate(['id' => $request->product_id],
                 ['name' => $request->name,
                 'email' => $request->email,
                 'role_id' => $request->role_id,
                 'password' => Hash::make($request['password'])]);
+        } else {
+            $request->validate([
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255'],
+                'role_id' => ['required'],
+            ]);
+            User::updateOrCreate(['id' => $request->product_id],
+            ['name' => $request->name,
+            'email' => $request->email,
+            'role_id' => $request->role_id]);
+        }
 
-        return response()->json(['success'=>'Product saved successfully.']);
+        return response()->json(['success'=>'User saved successfully.']);
     }
 
     public function edit($id)
@@ -72,6 +81,6 @@ class UserController extends Controller
     public function destroy($id)
     {
         User::find($id)->delete();
-        return response()->json(['success'=>'Role deleted successfully.']);
+        return response()->json(['success'=>'User deleted successfully.']);
     }
 }
