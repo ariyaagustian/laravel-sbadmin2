@@ -20,7 +20,7 @@
     </li>
 
 
-    @if (Auth::user()->role->role_name == "Superadmin")
+    @if (Auth::user()->role->role_name == "superadmin")
     {{-- Master Data --}}
     <!-- Divider -->
     <hr class="sidebar-divider">
@@ -45,7 +45,7 @@
     @endif
 
 
-    @if (Auth::user()->role->role_name == "Superadmin" || Auth::user()->role->role_name == "Administrasi")
+    @if (Auth::user()->role->role_name == "superadmin" || Auth::user()->role->role_name == "admin")
     {{-- Menu Administrasi --}}
     <!-- Divider -->
     <hr class="sidebar-divider">

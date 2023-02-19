@@ -12,18 +12,14 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Auth::routes(['verify' => true]);
+Route::get('auth/google', 'Auth\LoginController@redirectToGoogle')->name('auth.google');
+Route::get('auth/google/callback', 'Auth\LoginController@handleGoogleCallback')->name('auth.google.callback');
 
+Auth::routes(['verify' => true]);
+    Route::get('/', 'Superadmin\SuperadminController@index')->name('admin.dashboard')->middleware(['role:1,2,3,4,5', 'verified']);
     Route::get('/dashboard', 'Superadmin\SuperadminController@index')->name('admin.dashboard')->middleware(['role:1,2,3,4,5', 'verified']);
     Route::resource('users','UserController')->middleware(['role:1,2', 'verified']);
     Route::resource('roles','RoleController')->middleware(['role:1,2', 'verified']);
-
-
-
-
-
-
 // Route::get('/home', 'HomeController@index')->name('home');
+
+

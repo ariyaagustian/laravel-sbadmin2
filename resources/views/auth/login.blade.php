@@ -57,9 +57,12 @@
                                             </label>
                                         </div>
                                     </div>
-                                    <button type="submit" class="btn btn-primary btn-block">
+                                    <button type="submit" class="btn btn btn-user btn-primary btn-block">
                                         {{ __('Login') }}
                                     </button>
+                                    <a href="{{ route('auth.google') }}" class="btn btn-google btn-user btn-block">
+                                        <i class="fab fa-google fa-fw"></i> Login with Google
+                                    </a>
                                 </form>
                                 <hr>
                                 <div class="text-center">

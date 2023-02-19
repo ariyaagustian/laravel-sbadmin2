@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use \Auth;
+use Socialite;
+use Auth;
+use Exception;
+use App\User;
 
 class LoginController extends Controller
 {
@@ -71,4 +74,39 @@ class LoginController extends Controller
     {
         // $this->middleware('guest')->except('logout');
     }
+
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    public function handleGoogleCallback()
+    {
+        try {
+            $user = Socialite::driver('google')->user();
+            $finduser = User::where('google_id', $user->id)->first();
+
+            if($finduser){
+                Auth::login($finduser);
+                return redirect('/dashboard');
+
+            }else{
+
+                $newUser = User::create([
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'role_id' => 3,
+                    'google_id'=> $user->id,
+                    'password'=> null
+                ]);
+
+                Auth::login($newUser);
+                return redirect('/dashboard');
+            }
+
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+    }
+
 }

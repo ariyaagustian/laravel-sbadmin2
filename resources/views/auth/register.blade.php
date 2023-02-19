@@ -39,7 +39,7 @@
                                 </span>
                                 @enderror
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <select id="role_id" class="form-control" @error('role_id') is-invalid @enderror" name="role_id"
                                     value="{{ old('role_id') }}" required>
                                     <option value="" disabled selected>Select Role...</option>
@@ -53,7 +53,7 @@
                                     <strong>{{ $message }}</strong>
                                 </span>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <div class="form-group row">
                                 <div class="col-sm-6 mb-3 mb-sm-0">
